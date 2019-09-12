@@ -82,6 +82,6 @@ public interface FunctionApi {
 			@ApiResponse(code = 404, message = "无效的请求路径") })
 	@GetMapping("/getFunctionByItemMoid/{moid}")
 	public ResponseEntity<List<Function>> getFunctionByItemMoid(HttpServletResponse response,
-			@ApiParam(value = "moid", required = true) @RequestParam("moid") String moid);
+			@ApiParam(value = "moid", required = true) @PathVariable("moid") String moid);
 	
 }

@@ -177,10 +177,7 @@ name: "home",
 }
 
 /* user */
-.el-table__header-wrapper{
-  line-height: 80px;
-  margin-top: 47px;
-}
+
 #saveUser{
   position: absolute;
   top: 110px;

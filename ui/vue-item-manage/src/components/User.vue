@@ -1,87 +1,61 @@
 <template>
-  <div id = "user">
-    <el-button id="saveUser" v-on:click="openSaveUser" type="primary" plain class="saveUser">添加</el-button>
-      <el-table :data="ogjs" class="el-table1" @expand-change = "rowClick" ref="table" row-key="moid" :row-key='getRowKeys'
-          :expand-row-keys="expands">
-
-          <!-- 功能子级 -->
-         <el-table-column type="expand" width="80">
-           <!-- <el-button id="saveFunction" v-on:click="openFunction" type="primary" plain class="saveFunction">添加</el-button> -->
-            <template slot-scope="scope1">
-          <el-table
-            :data="functions"
-             ref="multipleTable"
-            style="width: 100%; left:158px; top: -20px;" size="mini">
-
-            <el-table-column
-              label="功能简介"
-              width="130">
-              <template slot-scope="scope">
-                <span style="margin-left: 10px">{{ scope.row.name }}</span>
-              </template>
-            </el-table-column>
-
-            <el-table-column
-              label="周期"
-              width="180" >
-              <template slot-scope="scope">
-                <span style="margin-left: 10px">{{ scope.row.period }}</span>
-              </template>
-            </el-table-column>
-
-            <el-table-column
-              label="波及"
-              width="180">
-              <template slot-scope="scope">
-                <span style="margin-left: 10px">{{ scope.row.affect }}</span>
-              </template>
-            </el-table-column>
-
-            <el-table-column
-              label="负责人"
-              width="180">
-              <template slot-scope="scope">
-                <span style="margin-left: 10px">{{ scope.row.principal }}</span>
-              </template>
-            </el-table-column>
-
-            <el-table-column
-              label="状态"
-              width="180">
-              <template slot-scope="scope">
-                <span style="margin-left: 10px">{{ scope.row.state }}</span>
-              </template>
-            </el-table-column>
-
-              <el-table-column
-              label="日期"
-              width="180">
-              <template slot-scope="scope">
-                <i class="el-icon-time"></i>
-                <span style="margin-left: 10px">{{ scope.row.createTime }}</span>
-              </template>
-            </el-table-column>
-
-            <el-table-column label="操作" width="150">
-              <template slot-scope="scope">
-                <el-button
-                  size="mini"
-                  @click="openUpdate(scope.$index, scope.row)">查看</el-button>
-                <!-- <el-button
-                  size="mini"
-                  type="danger"
-                  @click="handleDelete(scope.$index, scope.row)">删除</el-button> -->
-              </template>
-            </el-table-column>
-          </el-table>
-            </template>
+  <div id = "user" style="background-color: white;">
+    <div style="height: 100px;">
+      <el-button id="saveUser" v-on:click="openSaveUser" type="primary" plain class="saveUser">添加</el-button>
+    </div>
+      <el-table
+    :data="ogjs"
+    style="width: 100%">
+     <el-table-column type="expand">
+          <template slot-scope="props">
+            <el-form label-position="left" inline class="demo-table-expand">
+              <el-form-item label="项目名称">
+                <span>{{ props.row.name }}</span>
+              </el-form-item>
+              <el-form-item label="项目周期">
+                <span>{{ props.row.period }}</span>
+              </el-form-item>
+              <el-form-item label="项目版本">
+                <span>{{ props.row.version }}</span>
+              </el-form-item>
+              <el-form-item label="项目代码流">
+                <span>{{ props.row.createTime }}</span>
+              </el-form-item>
+              <el-form-item label="项目负责人">
+                <span>{{ props.row.principal }}</span>
+              </el-form-item>
+              <el-form-item label="状态">
+                <span>{{ props.row.state }}</span>
+              </el-form-item>
+              <el-form-item label="开始时间">
+                <span>{{ props.row.state }}</span>
+              </el-form-item>
+              <el-form-item label="结束时间">
+                <span>{{ props.row.state }}</span>
+              </el-form-item>
+              <el-form-item label="创建时间">
+                <span>{{ props.row.createTime }}</span>
+              </el-form-item>
+              <el-form-item label="项目描述" >
+                <el-input
+                  type="textarea"
+                  style="width: 1000px;"
+                  :autosize="{ minRows: 20, maxRows: 20 }"
+                  placeholder="请输入内容"
+                  v-model="props.row.describe">
+                </el-input>
+              </el-form-item>
+            </el-form>
+          </template>
         </el-table-column>
-
-        <el-table-column
+        <div style="top:100px"></div>
+    <el-table-column
           label="项目姓名"
           width="180">
           <template slot-scope="scope">
-             <span style="margin-left: 10px">{{ scope.row.name }}</span>
+             <el-button  size="mini" @click="getItemDemandAll(scope.row.moid)" type="primary" style="margin-left: 16px;">
+  {{ scope.row.name }}
+</el-button>
           </template>
         </el-table-column>
 
@@ -135,8 +109,157 @@
                @click="delUserOpen(scope.$index, scope.row)"></el-button>
           </template>
         </el-table-column>
-      </el-table>
+  </el-table>
 
+
+<el-drawer
+  title="我是外面的 Drawer"
+  :visible.sync="drawer"
+  size="70%">
+  <div>
+   <el-button @click="innerDrawer = true">打开里面的!</el-button>
+
+    
+<el-button id="saveDemand1" size="mini" v-on:click="openSaveDemand(null,true)" type="primary" plain >添加</el-button>
+
+<template>
+  
+  <el-table
+    :data="itemDemands"
+    border
+    style="width: 100%">
+    <el-table-column
+      fixed
+      prop="createDate"
+      label="创建日期"
+      width="150">
+    </el-table-column>
+    <el-table-column
+      prop="title"
+      label="标题"
+      width="120">
+    </el-table-column>
+    <el-table-column
+      prop="startDate"
+      label="开始时间"
+      width="120">
+    </el-table-column>
+    <el-table-column
+      prop="entDate"
+      label="结束时间"
+      width="120">
+    </el-table-column>
+    <el-table-column
+      prop="principal"
+      label="负责人"
+      width="300">
+    </el-table-column>
+    <el-table-column
+      prop="state"
+      label="状态"
+      width="120">
+    </el-table-column>
+    <el-table-column
+      fixed="right"
+      label="操作"
+      width="300">
+      <template slot-scope="scope">
+        <el-button label="ltr" @click="openFunctionList(scope.row)"  type="text" size="small">功能查看</el-button>
+        <el-button  @click="openSaveDemand(scope.row,false)" type="text" size="small">编辑</el-button>
+      </template>
+    </el-table-column>
+  </el-table>
+</template>
+
+
+
+
+
+   <el-drawer
+   size="50%"
+   direction="ltr"
+     title="我是里面的"
+     :append-to-body="true"
+     :before-close="handleClose"
+     :visible.sync="innerDrawer">
+     <p>_(:зゝ∠)_</p>
+<el-button id="savefunction" size="mini" v-on:click="openSaveFunction()" type="primary" plain >添加</el-button>
+
+      <el-table
+    :data="functions"
+    style="width: 100%">
+    <el-table-column type="expand">
+      <template slot-scope="props">
+        <el-form label-position="left" inline class="demo-table-expand">
+          <el-form-item label="标题">
+            <span>{{ props.row.name }}</span>
+          </el-form-item>
+          <el-form-item label="波及">
+            <span>{{ props.row.affect }}</span>
+          </el-form-item>
+          <el-form-item label="负责人">
+            <span>{{ props.row.principal }}</span>
+          </el-form-item>
+          <el-form-item label="状态">
+            <span>{{ props.row.state }}</span>
+          </el-form-item>
+          <el-form-item label="开始时间">
+            <span>{{ props.row.startData }}</span>
+          </el-form-item>
+          <el-form-item label="结束时间">
+            <span>{{ props.row.entData }}</span>
+          </el-form-item>
+          <el-form-item label="创建时间">
+            <span>{{ props.row.createTime }}</span>
+          </el-form-item>
+           <el-form-item label="内容">
+            <span>{{ props.row.content }}</span>
+          </el-form-item>
+        </el-form>
+      </template>
+    </el-table-column>
+    <el-table-column
+      label="标题"
+      prop="name">
+    </el-table-column>
+    <el-table-column
+      label="波及"
+      prop="affect">
+    </el-table-column>
+    <el-table-column
+      label="负责人"
+      prop="principal">
+    </el-table-column>
+    <el-table-column
+      label="状态"
+      prop="state">
+    </el-table-column>
+    <el-table-column
+      label="开始时间"
+      prop="startData">
+    </el-table-column>
+    <el-table-column
+      label="结束时间"
+      prop="endData">
+    </el-table-column>
+    <el-table-column
+      label="创建时间"
+      prop="createTime">
+    </el-table-column>
+    
+  </el-table>
+
+     
+   </el-drawer>
+  </div>
+</el-drawer>
+
+
+
+ <!-- 添加页面 -->
+        <el-dialog :title="this.info" :visible.sync="saveDemandTableVisible">
+            <SaveDemand ref="mychildDemand" v-on:closesaveDemand="closesaveDemand"/>
+        </el-dialog>
 
         <!-- 修改页面 -->
         <el-dialog :title="this.info" :visible.sync="dialogTableVisible">
@@ -147,6 +270,8 @@
         <el-dialog :title="this.info" :visible.sync="dialogTableVisible1">
             <PutFunction ref="mychildFunction" v-on:closePutFunction="closePutFunction"/>
         </el-dialog>
+
+       
       
   </div>
 </template>
@@ -154,24 +279,71 @@
 <script>
 import Putuser from './putUser';
 import PutFunction from './putFunction';
+import SaveDemand from './Item/saveDemand';
 export default {
     components: {  
         testComponent:require('./putUser.vue').default ,
         Putuser,
         testComponent:require('./putFunction.vue').default ,
-        PutFunction
+        PutFunction,
+        testComponent:require('./Item/saveDemand.vue').default ,
+        SaveDemand
     }, 
 
     data () {
         return {
+          tableData: [{
+          id: '12987122',
+          name: '好滋好味鸡蛋仔',
+          category: '江浙小吃、小吃零食',
+          desc: '荷兰优质淡奶，奶香浓而不腻',
+          address: '上海市普陀区真北路',
+          shop: '王小虎夫妻店',
+          shopId: '10333'
+        }, {
+          id: '12987123',
+          name: '好滋好味鸡蛋仔',
+          category: '江浙小吃、小吃零食',
+          desc: '荷兰优质淡奶，奶香浓而不腻',
+          address: '上海市普陀区真北路',
+          shop: '王小虎夫妻店',
+          shopId: '10333'
+        }, {
+          id: '12987125',
+          name: '好滋好味鸡蛋仔',
+          category: '江浙小吃、小吃零食',
+          desc: '荷兰优质淡奶，奶香浓而不腻',
+          address: '上海市普陀区真北路',
+          shop: '王小虎夫妻店',
+          shopId: '10333'
+        }, {
+          id: '12987126',
+          name: '好滋好味鸡蛋仔',
+          category: '江浙小吃、小吃零食',
+          desc: '荷兰优质淡奶，奶香浓而不腻',
+          address: '上海市普陀区真北路',
+          shop: '王小虎夫妻店',
+          shopId: '10333'
+        }],
+            drawer: false,
+            innerDrawer: false,
             info:"",
             msg: 7,
             ogjs: [],
+            /**功能集合 */
             functions: [],
+            /**用户集合 */
             users: {},
+            /**需求集合 */
+            itemDemands:[],
+            /**项目集合 */
+            itemMoid:"",
+            /**需求moId */
+            itemDemandMoid:"",
             putbln : false,
             dialogTableVisible: false,
             dialogTableVisible1:false,
+            saveDemandTableVisible:false,
             dialogFormVisible: false,
             formLabelWidth: '120px',
             rowMoid:"",
@@ -179,6 +351,9 @@ export default {
             getRowKeys (row) {
               return row.id
             },
+
+            
+           
         }
     },
     mounted : function(){
@@ -204,6 +379,9 @@ export default {
             });
     
         },
+        deleteRow(index, rows) {
+        rows.splice(index, 1);
+      },
         over :function () {
                         alert(123123);   //弹出鼠标从我上面滑过,事件是[object MouseEvent]
                     },
@@ -222,14 +400,34 @@ export default {
               that.expands = []
             }
         },
-        getFunctionAll : function(itemMoid){
+        //获取对应项目的需求
+        getItemDemandAll : function(itemMoid){
+          this.drawer = true;
+          this.itemMoid = itemMoid;
            this.$http.get(
-                this.baseUrl + '/functionApi/getFunctionByItemMoid/{moid}?moid=' + itemMoid
+                this.baseUrl + '/itemDemandApi/listItemDemandByMoid/' + itemMoid
+            )
+            .then((res) => {   //成功的回调
+                this.msg = this.msg + 1;
+                this.itemDemands = res.data;
+                console.log(this.itemDemands);
+            })
+            .catch((res) => {  //失败的回调
+                this.msg = this.msg - 1;
+                console.log(res);
+            });
+        },
+         //获取对应需求的功能
+        openFunctionList : function(row){
+          this.innerDrawer = true
+          this.itemDemandMoid = row.moid;
+           this.$http.get(
+                this.baseUrl + '/functionApi/getFunctionByItemMoid/' + row.moid
             )
             .then((res) => {   //成功的回调
                 this.msg = this.msg + 1;
                 this.functions = res.data;
-                console.log(this.functions);
+                console.log(this.itemDemands);
             })
             .catch((res) => {  //失败的回调
                 this.msg = this.msg - 1;
@@ -245,7 +443,11 @@ export default {
           this.dialogTableVisible1 = false;
           this.getUserAll();
         },
-        //添加用户信息
+        closesaveDemand: function(index, row){
+          this.saveDemandTableVisible = false;
+          this.getUserAll();
+        },
+        //添加项目信息
         openSaveUser : function(){
           this.dialogTableVisible = true;
           this.user = {};
@@ -258,7 +460,7 @@ export default {
             });
             this.$refs.mychild.resetForm("item");
         },
-        // 获取用户信息(修改)
+        // 获取项目信息(修改)
          openUpdate : function(index, row){
            this.info = "项目编辑";
             this.$notify({
@@ -278,7 +480,7 @@ export default {
               console.log(res);
             });
         },
-        // 删除用户信息
+        // 删除项目信息
         delUser : function(index, row){
             this.$http.delete(
                 this.baseUrl + '/itemApi/delItem/{moid}?moid=' + row.moid
@@ -315,42 +517,65 @@ export default {
             });
       },
 
+      /**打开需求编辑页面 */
+       openSaveDemand : function(row, demandBtl){
+          this.saveDemandTableVisible = true;
+          this.user = {};
+          this.type = "save";
+          if(demandBtl){
+            this.info = "新增需求";
+            this.$notify({
+              title: '消息',
+              message: '添加需求',
+              type: 'info'
+            });
+          }else{
+            this.info = "编辑需求";
+            this.$notify({
+              title: '消息',
+              message: '编辑需求',
+              type: 'info'
+            });
+          }
+           
+          if(null == row){
+            this.$refs.mychildDemand.resetForm("itemDemand");
+          }else{
+
+            this.$refs.mychildDemand.inintData(row.moid);
+          }
+        },
+
       //添加功能信息
-        openFunction : function(){
+        openSaveFunction : function(){
           this.dialogTableVisible1 = true;
           this.user = {};
           this.type = "save";
            this.info = "新增功能";
             this.$notify({
               title: '消息',
-              message: '添加功能',
+              message: '新增功能',
               type: 'info'
             });
-            //this.$refs.mychildFunction.setItemMoid(index, row);
-             this.$refs.multipleTable.setCurrentRow(row);
+            this.$refs.mychildFunction.setItemMoid(this.itemDemandMoid);
+             //this.$refs.multipleTable.setCurrentRow(row);
               console.log(row.moid);
         },
         // 获取用户信息(修改)
          openUpdate : function(index, row){
-           this.info = "功能编辑";
+           this.info = "项目编辑";
             this.$notify({
               title: '消息',
-              message: '功能编辑',
+              message: '项目编辑',
               type: 'info'
             });
             this.dialogTableVisible = true;
-            this.$http.get(
-              this.baseUrl + '/functionApi/getFunctionById/' + row.moid
-            )
-            .then((res) => {   //成功的回调
-             this.$refs.PutFunction.getDepts();
-              this.$refs.PutFunction.getUser(index, row, type);
-            })
-            .catch((res) => {  //失败的回调
-              this.msg = this.msg - 1;
-              console.log(res);
-            });
+            this.$refs.mychild.getUser(index, row);
         },
+        putDemand(row) {
+
+          console.log(row);
+        }
     }
 }
 </script>
@@ -367,8 +592,33 @@ export default {
       margin: 0 auto;
           width: 70%;
 }
-.cell{
-  width: 100%;
+
+.saveDemand{
+    position: absolute;
+    top: 24px;
+    left: 1449px;
+    z-index: 1;
+}
+
+.demo-table-expand {
+    font-size: 0;
+  }
+  .demo-table-expand label {
+    width: 90px;
+    color: #99a9bf;
+  }
+  .demo-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 50%;
+    font-size: 1px;
+    display: block;
+  }
+  .el-main {
+    background-color: #E9EEF3;
+    color: #333;
+    text-align: center;
+    line-height: 0px;
 }
 
 </style>

@@ -57,7 +57,7 @@
                 dz_function:{
                     id:"",
                     moid:"",
-                    itemMoid:"",
+                    itemDemandMoid:"",
                     state:"",
                     name:"",
                     period:"",
@@ -93,11 +93,11 @@
         },
         methods: {
             setItemMoid(index, row){
-                this.dz_function.itemMoid = row.itemMoid;
+                this.dz_function.itemDemandMoid = row.itemDemandMoid;
             },
             // 添加或修改
             submitForm(formName) {
-                 this.dz_function.itemMoid =  this.dz_function.itemName;
+                 this.dz_function.itemDemandMoid =  this.dz_function.itemName;
                 this.$refs[formName].validate((valid) => {
                 if (valid) {
                     if(this.dz_function.moid == ""){
@@ -162,7 +162,7 @@
                     this.dz_function.content = res.data.content;
                     this.dz_function.describe = res.data.describe;
                     this.dz_function.createTime = res.data.createTime;
-                    this.dz_function.itemMoid = res.data.itemMoid;
+                    this.dz_function.itemDemandMoid = res.data.itemDemandMoid;
                     this.dz_function.itemName = res.data.itemName;
                     this.saveOrpdate = "update";
 

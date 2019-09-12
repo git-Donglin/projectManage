@@ -21,14 +21,18 @@ public class Function  implements Serializable{
 	private Integer id;
 	@ApiModelProperty(value = "功能moid", name = "moid")
 	private String moid;
-	@ApiModelProperty(value = "项目moid", name = "itemMoid")
-	private String itemMoid;
+	@ApiModelProperty(value = "项目itemDemandMoid", name = "itemDemandMoid")
+	private String itemDemandMoid;
 	@ApiModelProperty(value = "功能状态", name = "state")
 	private Integer state;
 	@ApiModelProperty(value = "功能简称", name = "name")
 	private String name;
 	@ApiModelProperty(value = "功能周期", name = "period")
 	private Integer period;
+	@ApiModelProperty(value = "开始时间", name = "startDate")
+	private Date startDate;
+	@ApiModelProperty(value = "结束时间", name = "entDate")
+	private Date entDate;
 	@ApiModelProperty(value = "功能波及", name = "affect")
 	private String affect;
 	@ApiModelProperty(value = "功能负责人", name = "principal")
@@ -54,12 +58,15 @@ public class Function  implements Serializable{
 	public void setMoid(String moid) {
 		this.moid = moid;
 	}
-	public String getItemMoid() {
-		return itemMoid;
+
+	public String getItemDemandMoid() {
+		return itemDemandMoid;
 	}
-	public void setItemMoid(String itemMoid) {
-		this.itemMoid = itemMoid;
+
+	public void setItemDemandMoid(String itemDemandMoid) {
+		this.itemDemandMoid = itemDemandMoid;
 	}
+
 	public Integer getState() {
 		return state;
 	}
@@ -114,6 +121,20 @@ public class Function  implements Serializable{
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
-	
 
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEntDate() {
+		return entDate;
+	}
+
+	public void setEntDate(Date entDate) {
+		this.entDate = entDate;
+	}
 }

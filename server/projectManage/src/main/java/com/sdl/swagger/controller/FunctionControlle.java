@@ -79,7 +79,7 @@ public class FunctionControlle implements FunctionApi{
 	}
 
 	@Override
-	public ResponseEntity<List<Function>> getFunctionByItemMoid(HttpServletResponse response, String moid) {
+	public ResponseEntity<List<Function>> getFunctionByItemMoid(HttpServletResponse response, @PathVariable("moid") String moid) {
 		try {
 			
 			List<Function> list = FunctionService.getFunctionByItemMoid(moid);

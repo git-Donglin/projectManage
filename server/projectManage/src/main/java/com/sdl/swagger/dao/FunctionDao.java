@@ -35,39 +35,43 @@ public class FunctionDao {
 
 			@Override
 			public Function mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Function Function = new Function();
-				Function.setId(rs.getInt("id"));
-				Function.setMoid(rs.getString("moid"));
-				Function.setState(rs.getInt("state"));
-				Function.setName(rs.getString("name"));
-				Function.setAffect(rs.getString("affect"));
-				Function.setPeriod(rs.getInt("period"));
-				Function.setContent(rs.getString("content"));
-				Function.setDescribe(rs.getString("descc"));
-				Function.setPrincipal(rs.getString("principal"));
-				Function.setCreateTime(rs.getDate("create_time"));
-				Function.setItemMoid(rs.getString("item_moid"));
-				Function.setItemName(rs.getString("item_name"));
-				return Function;
+				Function function = new Function();
+				function.setId(rs.getInt("id"));
+				function.setMoid(rs.getString("moid"));
+				function.setState(rs.getInt("state"));
+				function.setName(rs.getString("name"));
+				function.setAffect(rs.getString("affect"));
+				function.setPeriod(rs.getInt("period"));
+				function.setContent(rs.getString("content"));
+				function.setDescribe(rs.getString("descc"));
+				function.setPrincipal(rs.getString("principal"));
+				function.setCreateTime(rs.getDate("create_time"));
+				function.setItemDemandMoid(rs.getString("item_demand_moid"));
+				//function.setItemName(rs.getString("item_name"));
+				function.setStartDate(rs.getDate("start_data"));
+				function.setEntDate(rs.getDate("ent_data"));
+				return function;
 			}
 		};
 		personalMtMapperByItmeName = new RowMapper<Function>() {
 
 			@Override
 			public Function mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Function Function = new Function();
-				Function.setId(rs.getInt("id"));
-				Function.setMoid(rs.getString("moid"));
-				Function.setState(rs.getInt("state"));
-				Function.setName(rs.getString("name"));
-				Function.setAffect(rs.getString("affect"));
-				Function.setPeriod(rs.getInt("period"));
-				Function.setContent(rs.getString("content"));
-				Function.setDescribe(rs.getString("descc"));
-				Function.setPrincipal(rs.getString("principal"));
-				Function.setCreateTime(rs.getDate("create_time"));
-				Function.setItemMoid(rs.getString("item_moid"));
-				return Function;
+				Function function = new Function();
+				function.setId(rs.getInt("id"));
+				function.setMoid(rs.getString("moid"));
+				function.setState(rs.getInt("state"));
+				function.setName(rs.getString("name"));
+				function.setAffect(rs.getString("affect"));
+				function.setPeriod(rs.getInt("period"));
+				function.setContent(rs.getString("content"));
+				function.setDescribe(rs.getString("descc"));
+				function.setPrincipal(rs.getString("principal"));
+				function.setCreateTime(rs.getDate("create_time"));
+				function.setItemDemandMoid(rs.getString("item_demand_moid"));
+				function.setStartDate(rs.getDate("start_data"));
+				function.setEntDate(rs.getDate("ent_data"));
+				return function;
 			}
 		};
 	}
@@ -77,7 +81,7 @@ public class FunctionDao {
 	 * 
 	 * @return
 	 */
-	private static final String ALL_FUNCTION_SQL = "select a.*,b.item_name from Function a ,item b where a.item_moid = b.moid";
+	private static final String ALL_FUNCTION_SQL = "select * from Function";
 
 	public List<Function> allFunction() {
 		List<Function> list = jdbcTemplate.query(ALL_FUNCTION_SQL, personalMtMapper);
@@ -90,7 +94,7 @@ public class FunctionDao {
 	 * @param key：功能Id
 	 * @return
 	 */
-	private static final String GET_FUNCTIONBYID_SQL = "select a.*,b.item_name from Function a ,item b  where a.item_moid = b.moid and a.moid = ?";
+	private static final String GET_FUNCTIONBYID_SQL = "select * from Function";
 
 	public Function getFunctionById(String moid) {
 		try {
@@ -106,7 +110,7 @@ public class FunctionDao {
 	 * @param detail:功能信息
 	 * @throws BusinessException
 	 */
-	private static final String ADD_FUNCTION_SQL = "insert into Function (moid, name, state, period, principal, content, descc, item_moid, affect, create_time) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+	private static final String ADD_FUNCTION_SQL = "insert into Function (moid, `name`, state, period, principal, content, descc, item_demand_moid, affect, create_time, start_data, ent_data) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public void saveFunction(Function function) {
 		jdbcTemplate.update(ADD_FUNCTION_SQL, new PreparedStatementSetter() {
@@ -122,9 +126,11 @@ public class FunctionDao {
 				preparedStatement.setObject(++i, function.getPrincipal());
 				preparedStatement.setObject(++i, function.getContent());
 				preparedStatement.setObject(++i, function.getDescribe());
-				preparedStatement.setObject(++i, function.getItemMoid());
+				preparedStatement.setObject(++i, function.getItemDemandMoid());
 				preparedStatement.setObject(++i, function.getAffect());
 				preparedStatement.setObject(++i, function.getCreateTime());
+				preparedStatement.setObject(++i, function.getStartDate());
+				preparedStatement.setObject(++i, function.getEntDate());
 			}
 		});
 	}
@@ -148,7 +154,7 @@ public class FunctionDao {
 	 * @param detail：功能信息
 	 * @throws BusinessException
 	 */
-	private static final String PUT_Function_SQL = "update Function set name = ?, state = ?, period = ?, principal = ?, content = ?, descc = ?, item_moid = ?, affect = ? where moid = ?";
+	private static final String PUT_Function_SQL = "update Function set name = ?, state = ?, period = ?, principal = ?, content = ?, descc = ?, item_demand_moid = ?, affect = ?, start_data = ?, end_data = ? where moid = ?";
 
 	public void updateFunction(Function function) {
 		jdbcTemplate.update(PUT_Function_SQL, new PreparedStatementSetter() {
@@ -162,8 +168,10 @@ public class FunctionDao {
 				preparedStatement.setObject(++i, function.getPrincipal());
 				preparedStatement.setObject(++i, function.getContent());
 				preparedStatement.setObject(++i, function.getDescribe());
-				preparedStatement.setObject(++i, function.getItemMoid());
-				preparedStatement.setObject(++i, function.getAffect());
+				preparedStatement.setObject(++i, function.getItemDemandMoid());
+				preparedStatement.setObject(++i, function.getCreateTime());
+				preparedStatement.setObject(++i, function.getStartDate());
+				preparedStatement.setObject(++i, function.getEntDate());
 				preparedStatement.setObject(++i, function.getMoid());
 			}
 		});
@@ -171,7 +179,7 @@ public class FunctionDao {
 	
 	
 
-	private static final String GET_BYITEMMOID_SQL = "select * from Function a where a.item_moid = ?";
+	private static final String GET_BYITEMMOID_SQL = "select * from Function a where a.item_demand_moid = ?";
 
 	public List<Function> getFunctionByItemMoid(String itemMoid) {
 		List<Function> list = jdbcTemplate.query(GET_BYITEMMOID_SQL, personalMtMapperByItmeName, itemMoid);
