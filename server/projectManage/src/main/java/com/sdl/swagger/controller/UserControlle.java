@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.sdl.swagger.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,11 +53,16 @@ public class UserControlle {
 			@ApiResponse(code = 401, message = "没有提供认证信息"), @ApiResponse(code = 403, message = "无权访问"),
 			@ApiResponse(code = 404, message = "无效的请求路径") })
 	@GetMapping("/getUserById/{Id}")
-	public ResponseEntity<UserDetail> getUserById(
+	public ResponseEntity<User> getUserById(
 			@ApiParam(value = "用户Id", required = true) @PathVariable("Id") String id) {
+		User data = null;
+		try {
 
-		UserDetail data = userService.getUserById(id);
-		return new ResponseEntity<UserDetail>(data, HttpStatus.OK);
+			data = userService.getUserById(id);
+		} catch (BusinessException e){
+
+		}
+		return new ResponseEntity<User>(data, HttpStatus.OK);
 	}
 
 	@ApiOperation("根据用户名和密码获取用户信息")

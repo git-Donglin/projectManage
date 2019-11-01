@@ -34,6 +34,8 @@ public class ItemDemand {
     @ApiModelProperty(value = "需求负责人", name = "principal")
     private String principal;
 
+    private String principalStr; // 负责人名称
+
     public Integer getId() {
         return id;
     }
@@ -112,5 +114,13 @@ public class ItemDemand {
 
     public void setItemMoid(String itemMoid) {
         this.itemMoid = itemMoid;
+    }
+
+    public String getPrincipalStr() {
+        return principalStr;
+    }
+
+    public void setPrincipalStr(String principalStr) {
+        this.principalStr = principalStr;
     }
 }

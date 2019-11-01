@@ -19,7 +19,7 @@
                 <span>{{ props.row.version }}</span>
               </el-form-item>
               <el-form-item label="项目代码流">
-                <span>{{ props.row.createTime }}</span>
+                <span>{{ props.row.address }}</span>
               </el-form-item>
               <el-form-item label="项目负责人">
                 <span>{{ props.row.principal }}</span>
@@ -137,7 +137,7 @@
     <el-table-column
       prop="title"
       label="标题"
-      width="120">
+      style="width:auto;">
     </el-table-column>
     <el-table-column
       prop="startDate"
@@ -166,6 +166,7 @@
       <template slot-scope="scope">
         <el-button label="ltr" @click="openFunctionList(scope.row)"  type="text" size="small">功能查看</el-button>
         <el-button  @click="openSaveDemand(scope.row,false)" type="text" size="small">编辑</el-button>
+        <el-button  @click="deleteDemand(scope.row)" type="text" size="small">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -384,7 +385,7 @@ export default {
       },
         over :function () {
                         alert(123123);   //弹出鼠标从我上面滑过,事件是[object MouseEvent]
-                    },
+        },
         rowClick : function(row, expandedRows){
 
           this.rowMoid = row.moid;
@@ -421,8 +422,14 @@ export default {
         openFunctionList : function(row){
           this.innerDrawer = true
           this.itemDemandMoid = row.moid;
-           this.$http.get(
-                this.baseUrl + '/functionApi/getFunctionByItemMoid/' + row.moid
+          this.getFunctionAll(this.itemDemandMoid);
+        },
+        /**
+         * 根据需求Id获取功能列表
+         */
+        getFunctionAll : function(demandMoid){
+            this.$http.get(
+                this.baseUrl + '/functionApi/getFunctionByItemMoid/' + demandMoid
             )
             .then((res) => {   //成功的回调
                 this.msg = this.msg + 1;
@@ -441,11 +448,12 @@ export default {
         },
         closePutFunction: function(index, row){
           this.dialogTableVisible1 = false;
-          this.getUserAll();
+          this.getFunctionAll(this.itemDemandMoid);
         },
+        // 子级回调，需求列表加载
         closesaveDemand: function(index, row){
           this.saveDemandTableVisible = false;
-          this.getUserAll();
+          this.getItemDemandAll(this.itemMoid);
         },
         //添加项目信息
         openSaveUser : function(){
@@ -537,13 +545,55 @@ export default {
               type: 'info'
             });
           }
-           
-          if(null == row){
-            this.$refs.mychildDemand.resetForm("itemDemand");
-          }else{
 
-            this.$refs.mychildDemand.inintData(row.moid);
-          }
+          this.$refs.mychildDemand.resetForm("itemDemand");
+            if(null == row){
+              this.$refs.mychildDemand.inintData(this.itemMoid, 0);
+            }else{
+              this.$refs.mychildDemand.inintData(row.moid, 1);
+            }
+           
+//           setTimeout(() => {
+
+//             this.$refs.mychildDemand.resetForm("itemDemand");
+//             if(null == row){
+//               this.$refs.mychildDemand.inintData(this.itemMoid, 0);
+//             }else{
+//               this.$refs.mychildDemand.inintData(row.moid, 1);
+//             }
+// 　　　　   }, 0)
+        },
+
+        deleteDemand : function(row){
+           this.$confirm('此操作将永久删除该需求, 是否继续?', '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+
+               this.$http.delete(
+                this.baseUrl + '/itemDemandApi/deleteItemDemand/' + row.moid
+            )
+            .then((res) => {   //成功的回调
+                this.$notify({
+                  title: '成功',
+                  message: '删除成功',
+                  type: 'success'
+                });
+                this.getItemDemandAll(this.itemMoid);
+            })
+            .catch((res) => {  //失败的回调
+                 this.$notify.error({
+                  title: '错误',
+                  message: res.state
+                });
+            });           
+            }).catch(() => {
+              this.$notify.info({
+                title: '消息',
+                message: '已取消删除'
+              });         
+            });
         },
 
       //添加功能信息
@@ -557,7 +607,10 @@ export default {
               message: '新增功能',
               type: 'info'
             });
-            this.$refs.mychildFunction.setItemMoid(this.itemDemandMoid);
+            setTimeout(() => {
+              this.$refs.mychildFunction.resetForm("dz_function");
+              this.$refs.mychildFunction.setItemMoid(this.itemDemandMoid);
+　　　　     }, 0)
              //this.$refs.multipleTable.setCurrentRow(row);
               console.log(row.moid);
         },
@@ -570,7 +623,9 @@ export default {
               type: 'info'
             });
             this.dialogTableVisible = true;
-            this.$refs.mychild.getUser(index, row);
+            setTimeout(() => {
+              this.$refs.mychild.getUser(index, row);
+　　　　     }, 0)
         },
         putDemand(row) {
 

@@ -6,6 +6,7 @@ package com.sdl.swagger.service;
 
 import java.util.List;
 
+import com.sdl.swagger.entity.User;
 import com.sdl.swagger.entity.UserDetail;
 import com.sdl.swagger.exception.BusinessException;
 
@@ -24,17 +25,17 @@ public interface UserService {
 	
 	/**
 	 * 根据用户Id获取用户信息
-	 * @param key：用户Id
+	 * @param account：用户Id
 	 * @return
 	 */
-	public UserDetail getUserById(String key);
+	public User getUserById(String account) throws BusinessException;
 	
 	/**
 	 * 新增用户信息
-	 * @param detail:用户信息
+	 * @param user:用户信息
 	 * @throws BusinessException 
 	 */
-	public void saveUser(UserDetail detail) throws BusinessException;
+	public void saveUser(User user) throws BusinessException;
 	
 	/**
 	 * 根据用户Id删除用户信息
@@ -50,4 +51,6 @@ public interface UserService {
 	 * @throws BusinessException
 	 */
 	public void updateUser(String key, UserDetail detail) throws BusinessException;
+
+	public void login(String account, String password) throws BusinessException;
 }

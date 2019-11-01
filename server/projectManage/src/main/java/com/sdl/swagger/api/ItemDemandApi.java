@@ -28,6 +28,10 @@ public interface ItemDemandApi {
     public ResponseEntity<Void> saveItemDemand( @ApiParam(value = "需求信息") ItemDemand itemDemand);
 
     @ApiOperation(value = "获取单个需求信息", notes = "需求信息服务接口")
-    @GetMapping("/getItemDemandByMoid/{moid}")
-    public ResponseEntity<ItemDemand> getItemDemandByMoid(@PathVariable("moid") String moid);
+    @GetMapping("/getItemDemandByMoid/{demandMoid}")
+    public ResponseEntity<ItemDemand> getItemDemandByMoid(@PathVariable("demandMoid") String demandMoid);
+
+    @ApiOperation(value = "删除需求信息", notes = "删除需求服务接口")
+    @DeleteMapping("/deleteItemDemand/{demandMoid}")
+    public ResponseEntity<Void> deleteItemDemand(@PathVariable("demandMoid") String demandMoid);
 }

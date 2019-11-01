@@ -33,11 +33,11 @@
                 </el-select>
             </el-form-item>
 
-             <el-form-item  label="所属项目" prop="itemName" style="display: inline-block;">
+             <!-- <el-form-item  label="所属项目" prop="itemName" style="display: inline-block;">
                 <el-select v-model="dz_function.itemName">
                      <el-option v-for="(item, index) in items"  :label="item.name" :value="item.moid"/>
                 </el-select>
-            </el-form-item>
+            </el-form-item> -->
 
             <el-form-item>
                 <el-button type="primary" @click="submitForm('dz_function')">保存</el-button>
@@ -92,12 +92,11 @@
         this.getDepts();
         },
         methods: {
-            setItemMoid(index, row){
-                this.dz_function.itemDemandMoid = row.itemDemandMoid;
+            setItemMoid(itemDemandMoid){
+                this.dz_function.itemDemandMoid = itemDemandMoid;
             },
             // 添加或修改
             submitForm(formName) {
-                 this.dz_function.itemDemandMoid =  this.dz_function.itemName;
                 this.$refs[formName].validate((valid) => {
                 if (valid) {
                     if(this.dz_function.moid == ""){
@@ -163,7 +162,7 @@
                     this.dz_function.describe = res.data.describe;
                     this.dz_function.createTime = res.data.createTime;
                     this.dz_function.itemDemandMoid = res.data.itemDemandMoid;
-                    this.dz_function.itemName = res.data.itemName;
+                    //this.dz_function.itemName = res.data.itemName;
                     this.saveOrpdate = "update";
 
                     console.log(this.ogjs);

@@ -109,7 +109,7 @@ export default {
     },
     methods:{
       // 获取所有的用户信息
-        getUserAll : function(){
+        getUserAll : function(itemDemandMoid){
             this.$http.get(
                 this.baseUrl + '/functionApi/queryAll'
             )

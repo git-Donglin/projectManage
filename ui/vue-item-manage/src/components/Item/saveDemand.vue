@@ -31,7 +31,7 @@
                     :loading="loading">
                     <el-option
                       v-for="item in options"
-                      :key="item.value"
+                      :key="item.label"
                       :label="item.label"
                       :value="item.value">
                     </el-option>
@@ -82,6 +82,7 @@ data () {
                 entDate:"",
                 create:"",
                 principal:"",
+                principalStr:"",
                 itemMoid:""
                 
             },
@@ -112,19 +113,17 @@ data () {
     props: {},
     mounted : function(){
       //加载用户信息；
-      //this.getAlluser();
-     
- this.list = this.states.map(item => {
-        return { value: item, label: item };
-      });
 
     },
     
     methods: {
-      inintData(itemMoid){
-        this.itemDemand.itemMoid = itemMoid;
+      inintData(moid, type){
+        if(0 == type){
+          this.itemDemand.itemMoid = moid;
+        } else {
+          this.getDemand(moid);
+        }
         this.getAlluser();
-        this.getDemand(itemMoid);
       },
       submitForm(formName) {
         this.checkData();
@@ -160,15 +159,15 @@ data () {
       },
       checkData(){
         var principalArray = this.itemDemand.principal;
-        for(var principal in principalArray){
-          this.itemDemand.principal = "," + principal;
+        for(var principalIndex in this.principalArray){
+          this.itemDemand.principal += "," + this.principalArray[principalIndex];
         }
         this.itemDemand.principal = this.itemDemand.principal.substring(1,this.itemDemand.principal.length);
       },
-      getDemand : function(itemMoid){
+      getDemand : function(demandMoid){
         this.saveOrpdate = false;
         this.$http.get(
-                this.baseUrl + '/itemDemandApi/getItemDemandByMoid/' + itemMoid
+                this.baseUrl + '/itemDemandApi/getItemDemandByMoid/' + demandMoid
             )
             .then((res) => {   //成功的回调
                 this.itemDemand.id = res.data.id;
@@ -179,7 +178,7 @@ data () {
                 this.itemDemand.createDate = res.data.createDate;
                 this.itemDemand.startDate = res.data.startDate;
                 this.itemDemand.entDate = res.data.entDate;
-                this.itemDemand.principal = res.data.principal + "";
+                //this.itemDemand.principal = res.data.principalStr + "";
                 this.itemDemand.itemMoid = res.data.itemMoid;
 
                 this.principalArray = res.data.principal.split(',');
@@ -202,7 +201,7 @@ data () {
                 this.ogjs = res.data;
                 this.states = res.data;
                 this.list = res.data.map(item => {
-                  return { value: item.userId, label: item.name };
+                  return { value: item.moid, label: item.name };
                 });
                 console.log(this.states);
             })

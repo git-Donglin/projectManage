@@ -37,15 +37,21 @@ public class ItemDemandController implements ItemDemandApi{
     }
 
     @Override
+    public ResponseEntity<Void> deleteItemDemand(@PathVariable("demandMoid") String demandMoid) {
+        itemDemandService.deleteItemDemand(demandMoid);
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<List<ItemDemand>> listItemDemandByMoid(@PathVariable("itemMoid") String itemMoid){
         List<ItemDemand> list = itemDemandService.listItemDemandByItemMoid(itemMoid);
         return new ResponseEntity<List<ItemDemand>>(list, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<ItemDemand> getItemDemandByMoid(@PathVariable("moid") String moid) {
+    public ResponseEntity<ItemDemand> getItemDemandByMoid(@PathVariable("demandMoid") String demandMoid) {
         ItemDemand itemDemand = new ItemDemand();
-        itemDemand = itemDemandService.getItemDemandByMoid(moid);
+        itemDemand = itemDemandService.getItemDemandByMoid(demandMoid);
         return new ResponseEntity<ItemDemand>(itemDemand, HttpStatus.OK);
     }
 }

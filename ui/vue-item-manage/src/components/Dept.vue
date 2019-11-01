@@ -88,7 +88,7 @@ export default {
         getDeptAll : function(){
           console.log( this.baseUrl + '/dept/getAllDept');
             this.$http.get(
-                this.baseUrl + '/dept/getAllDept'
+                this.baseUrl+'/dept/getAllDept'
             )
             .then((res) => {   //成功的回调
                 this.msg = this.msg + 1;
@@ -193,7 +193,7 @@ export default {
       margin: 0 auto;
           width: 70%;
 }
-.cell{
+/* .cell{
   width: 147px;
-}
+} */
 </style>

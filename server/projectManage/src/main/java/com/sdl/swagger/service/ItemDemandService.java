@@ -22,4 +22,6 @@ public interface ItemDemandService {
     public void putItemDemand(ItemDemand itemDemand);
 
     public ItemDemand getItemDemandByMoid(String moid);
+
+    public void deleteItemDemand(String itemDemandMoid);
 }

@@ -23,17 +23,18 @@ public class UserDetail extends User implements Serializable{
 
 
 	public UserDetail(int userId, String name, String age, String pwd, String address, 
-			String phone, String email, String date, String deptName) {
+			String phone, String email, String date, String deptName,String moid) {
 		super();
 		this.setUserId(userId);
 		this.setName(name);
 		this.setAge(age);
-		this.setPwd(pwd);
-		this.setCreate(date);
+		this.setPassword(pwd);
+		this.setCreateTime(date);
 		this.setDeptName(deptName);
 		this.address = address;
 		this.phone = phone;
 		this.email = email;
+		this.setMoid(moid);
 	}
 	
 	/**

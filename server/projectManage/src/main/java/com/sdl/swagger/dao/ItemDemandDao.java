@@ -107,4 +107,13 @@ public class ItemDemandDao {
     public ItemDemand getItemDemandByMoid(String moid){
        return jdbcTemplate.queryForObject(GET_ITEMDEMAND_BY_MOID, ItemDemandMapper, moid);
     }
+
+    /**
+     * 根据项目Id删除项目信息
+     * @param key:项目Id
+     */
+    private static final String DEL_ITEM_DEMAND_SQL = "delete from item_demand where moid = ?";
+    public void delItemDemand(String moid){
+        jdbcTemplate.update(DEL_ITEM_DEMAND_SQL, moid);
+    }
 }
